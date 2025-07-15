@@ -9,12 +9,16 @@ public class Player : MonoBehaviour
     private bool isRunning = false;
 
     private Rigidbody2D rb;
-
+    Vector2 inputVector;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         Instance = this;
+    }
+    void Update()
+    {
+        inputVector = GameInput.Instance.GetMovementVector();
     }
     private void FixedUpdate()
     {
@@ -22,7 +26,6 @@ public class Player : MonoBehaviour
     }
     void HandleMovement()
     {
-        Vector2 inputVector = GameInput.Instance.GetMovementVector();
         Vector2 newPosition = rb.position + inputVector * speed * Time.deltaTime;
 
         rb.MovePosition(newPosition);
