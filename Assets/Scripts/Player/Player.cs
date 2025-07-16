@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,7 +16,14 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         Instance = this;
+        GameInput.Instance.OnPlayerAttak += GameInput_OnPlayerAttak;
     }
+
+    private void GameInput_OnPlayerAttak(object sender, EventArgs e)
+    {
+        ActiveWeapon.Instance.GetActiveWeapon().Attak();
+    }
+
     void Update()
     {
         inputVector = GameInput.Instance.GetMovementVector();
