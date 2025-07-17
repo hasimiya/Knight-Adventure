@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordVisual : MonoBehaviour
@@ -20,5 +18,9 @@ public class SwordVisual : MonoBehaviour
     private void Sword_OnSwordSwing(object sender, EventArgs e)
     {
         animator?.SetTrigger(ATTAK_TRIGGER);
+    }
+    public void TriggerEndAttackAnimation()
+    {
+        sword.AttackColliderTurnOff();
     }
 }

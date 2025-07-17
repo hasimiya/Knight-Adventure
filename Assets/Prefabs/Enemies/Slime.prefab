@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 2173568956508374131}
   - component: {fileID: 3728960381806767937}
   - component: {fileID: 3550116525300145504}
+  - component: {fileID: 8981049348310158628}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -327,3 +328,16 @@ MonoBehaviour:
   roamingDistanseMax: 7
   roamingDistanseMin: 3
   roamingTimerMax: 2
+--- !u!114 &8981049348310158628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3045372560174256067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9590791fedc73114cbe57f10a0bcf977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 4
