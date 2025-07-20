@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7329b7a912c887442a73f5755098715b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damageAmount: 2
 --- !u!1 &6352436592691283597
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81088dbea912d1940a18cfbddff19abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sword: {fileID: 7711493679299945213}
+  _sword: {fileID: 0}
 --- !u!1 &8954325190108768432
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,4 +286,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81088dbea912d1940a18cfbddff19abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sword: {fileID: 7711493679299945213}
+  _sword: {fileID: 0}

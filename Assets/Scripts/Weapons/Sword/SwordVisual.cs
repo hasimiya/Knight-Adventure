@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class SwordVisual : MonoBehaviour
 {
-    [SerializeField] private Sword sword;
-    private Animator animator;
+    [SerializeField] private Sword _sword;
+    private Animator _animator;
     private const string ATTAK_TRIGGER = "Attack";
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
     private void Start()
     {
-        sword.OnSwordSwing += Sword_OnSwordSwing;
+        _sword.OnSwordSwing += Sword_OnSwordSwing;
     }
 
     private void Sword_OnSwordSwing(object sender, EventArgs e)
     {
-        animator?.SetTrigger(ATTAK_TRIGGER);
+        _animator?.SetTrigger(ATTAK_TRIGGER);
     }
     public void TriggerEndAttackAnimation()
     {
-        sword.AttackColliderTurnOff();
+        _sword.AttackColliderTurnOff();
     }
 }

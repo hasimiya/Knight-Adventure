@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ActiveWeapon : MonoBehaviour
 {
     public static ActiveWeapon Instance { get; private set; }
-    [SerializeField] private Sword sword;
+    [SerializeField] private Sword _sword;
     private void Awake()
     {
         Instance = this;
@@ -16,7 +14,7 @@ public class ActiveWeapon : MonoBehaviour
     }
     public Sword GetActiveWeapon()
     {
-        return sword;
+        return _sword;
     }
     private void FollowMousePosition()
     {

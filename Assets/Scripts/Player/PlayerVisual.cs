@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
-    private Animator animator;
-    private SpriteRenderer spriteRenderer;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
     private const string IS_RUNNING = "IsRunning";
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Update()
     {
-        animator.SetBool(IS_RUNNING, Player.Instance.IsRunning());
+        _animator.SetBool(IS_RUNNING, Player.Instance.IsRunning());
         AdjustPlayerFacingDirection();
     }
     private void AdjustPlayerFacingDirection()
@@ -21,11 +21,11 @@ public class PlayerVisual : MonoBehaviour
         Vector3 playerPosition = Player.Instance.GetPlayerScreenPosition();
         if (mousePosition.x < playerPosition.x)
         {
-            spriteRenderer.flipX = true;
+            _spriteRenderer.flipX = true;
         }
         else
         {
-            spriteRenderer.flipX = false;
+            _spriteRenderer.flipX = false;
         }
     }
 }

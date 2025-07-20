@@ -6,16 +6,16 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
 
-    [SerializeField] private float speed = 5f;
-    private float minMovingSpeed = 0.1f;
-    private bool isRunning = false;
+    [SerializeField] private float _speed = 5f;
+    private float _minMovingSpeed = 0.1f;
+    private bool _isRunning = false;
 
-    private Rigidbody2D rb;
-    Vector2 inputVector;
+    private Rigidbody2D _rb;
+    private Vector2 _inputVector;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         Instance = this;
         GameInput.Instance.OnPlayerAttak += GameInput_OnPlayerAttak;
     }
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        inputVector = GameInput.Instance.GetMovementVector();
+        _inputVector = GameInput.Instance.GetMovementVector();
     }
     private void FixedUpdate()
     {
@@ -35,19 +35,19 @@ public class Player : MonoBehaviour
     }
     void HandleMovement()
     {
-        Vector2 newPosition = rb.position + inputVector * speed * Time.deltaTime;
+        Vector2 newPosition = _rb.position + _inputVector * _speed * Time.deltaTime;
 
-        rb.MovePosition(newPosition);
-        if (Mathf.Abs(inputVector.x) > minMovingSpeed || Mathf.Abs(inputVector.y) > minMovingSpeed)
+        _rb.MovePosition(newPosition);
+        if (Mathf.Abs(_inputVector.x) > _minMovingSpeed || Mathf.Abs(_inputVector.y) > _minMovingSpeed)
         {
-            isRunning = true;
+            _isRunning = true;
         }
         else
         {
-            isRunning = false;
+            _isRunning = false;
         }
     }
-    public bool IsRunning() => isRunning;
+    public bool IsRunning() => _isRunning;
     public Vector3 GetPlayerScreenPosition() => Camera.main.WorldToScreenPoint(transform.position);
     // это метод для получения позиции игрока в мировых координатах
 }
