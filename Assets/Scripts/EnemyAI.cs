@@ -89,7 +89,7 @@ public class EnemyAI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
         State newState = State.Roaming;
 
-        if (_isChasingEnemy)
+        if (_isChasingEnemy && Player.Instance.IsAlive == true)
         {
             if (distanceToPlayer <= _chasingDistance)
             {
@@ -98,7 +98,7 @@ public class EnemyAI : MonoBehaviour
         }
         if (_isAttackingEnemy)
         {
-            if (distanceToPlayer <= _attackingDistance)
+            if (distanceToPlayer <= _attackingDistance && Player.Instance.IsAlive == true)
             {
                 newState = State.Attacking;
             }
@@ -183,7 +183,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (sourcePosition.x > targetPosition.x)
         {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
@@ -197,6 +197,7 @@ public class EnemyAI : MonoBehaviour
             if (IsRunning)
             {
                 ChangeFacingDirection(_lastPosition, transform.position);
+                _nextCheckDirectionTime = Time.time + _chekDirectionDuration;
             }
         }
         else if (_currentState == State.Attacking)
@@ -204,15 +205,18 @@ public class EnemyAI : MonoBehaviour
             ChangeFacingDirection(transform.position, Player.Instance.transform.position);
         }
         _lastPosition = transform.position;
-        _nextCheckDirectionTime = Time.time + _chekDirectionDuration;
+        //_nextCheckDirectionTime = Time.time + _chekDirectionDuration;
     }
     // Attack
     private void AttackingTarget()
     {
-        if (Time.time > _nextAttackTime)
+        if (Player.Instance.IsAlive)
         {
-            OnEnemyAttack?.Invoke(this, EventArgs.Empty);
-            _nextAttackTime = Time.time + _attackRate;
+            if (Time.time > _nextAttackTime)
+            {
+                OnEnemyAttack?.Invoke(this, EventArgs.Empty);
+                _nextAttackTime = Time.time + _attackRate;
+            }
         }
     }
 }
