@@ -25,11 +25,13 @@ public class SkeletonVisual : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    private void Start()
+    {
         _enemyAI.OnEnemyAttack += EnemyAI_OnEnemyAttack;
         _enemyEntity.OnTakeHit += EnemyEntity_OnTakeHit;
         _enemyEntity.OnEnemyDeath += EnemyEntity_OnEnemyDeath;
     }
-
     private void Update()
     {
         _animator.SetBool(IS_RUNNING_BOOL, _enemyAI.IsRunning);

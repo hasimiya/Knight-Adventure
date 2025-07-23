@@ -7,6 +7,7 @@ public class PlayerVisual : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     [SerializeField] private GameObject _playerShadow;
+    private FlashBlink _flashBlink;
 
     // Variables CONST
     private const string TAKEHIT_TRIGGER = "TakeHit";
@@ -18,6 +19,7 @@ public class PlayerVisual : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _flashBlink = GetComponent<FlashBlink>();
         Player.Instance.OnPlayerDeath += Player_OnPlayerDeath;
         Player.Instance.OnPlayerTakeHit += Player_OnPlayerTakeHit;
     }
@@ -25,7 +27,10 @@ public class PlayerVisual : MonoBehaviour
     private void Update()
     {
         _animator.SetBool(IS_RUNNING, Player.Instance.IsRunning());
-        AdjustPlayerFacingDirection();
+        if (Player.Instance.IsPlayerAlive())
+        {
+            AdjustPlayerFacingDirection();
+        }
     }
 
     // Private Methods
@@ -48,6 +53,7 @@ public class PlayerVisual : MonoBehaviour
     {
         _animator.SetBool(IS_DIE_BOOL, true);
         _playerShadow.SetActive(false);
+        _flashBlink.StopBliking();
     }
     private void Player_OnPlayerTakeHit(object sender, EventArgs e)
     {

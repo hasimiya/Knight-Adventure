@@ -26,4 +26,8 @@ public class GameInput : MonoBehaviour
     public Vector2 GetMovementVector() => _playerInputActions.Player.Move.ReadValue<Vector2>().normalized;
     public Vector3 GetMousePosition() => Mouse.current.position.ReadValue();
     // получаем позицию мыши в мировых координатах
+    public void DisableMovement()
+    {
+        _playerInputActions.Disable();
+    }
 }

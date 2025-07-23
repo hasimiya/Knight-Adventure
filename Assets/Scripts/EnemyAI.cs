@@ -89,42 +89,42 @@ public class EnemyAI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
         State newState = State.Roaming;
 
-        if (_isChasingEnemy && Player.Instance.IsAlive == true)
+        if (Player.Instance.IsPlayerAlive())
         {
-            if (distanceToPlayer <= _chasingDistance)
+            if (_isChasingEnemy)
             {
-                newState = State.Chasing;
+                if (distanceToPlayer <= _chasingDistance)
+                {
+                    newState = State.Chasing;
+                }
+            }
+            if (_isAttackingEnemy)
+            {
+                if (distanceToPlayer <= _attackingDistance)
+                {
+                    newState = State.Attacking;
+                }
             }
         }
-        if (_isAttackingEnemy)
-        {
-            if (distanceToPlayer <= _attackingDistance && Player.Instance.IsAlive == true)
-            {
-                newState = State.Attacking;
-            }
-        }
+
 
         if (newState != _currentState)
         {
             _currentState = newState;
-            if (newState == State.Chasing)
+            switch (newState)
             {
-                _navMeshAgent.ResetPath();
-                _navMeshAgent.speed = _chasingSpeed;
-            }
-            else if (newState == State.Roaming)
-            {
-                _navMeshAgent.ResetPath();
-                _navMeshAgent.speed = _roamingSpeed;
-                _roamingTimer = 0f;
-            }
-            else if (newState == State.Attacking)
-            {
-                _navMeshAgent.ResetPath();
-            }
-            else if (newState == State.Death)
-            {
-
+                case State.Chasing:
+                    _navMeshAgent.ResetPath();
+                    _navMeshAgent.speed = _chasingSpeed;
+                    break;
+                case State.Roaming:
+                    _navMeshAgent.ResetPath();
+                    _navMeshAgent.speed = _roamingSpeed;
+                    _roamingTimer = 0f;
+                    break;
+                case State.Attacking:
+                    _navMeshAgent.ResetPath();
+                    break;
             }
         }
     }
@@ -210,13 +210,10 @@ public class EnemyAI : MonoBehaviour
     // Attack
     private void AttackingTarget()
     {
-        if (Player.Instance.IsAlive)
+        if (Time.time > _nextAttackTime)
         {
-            if (Time.time > _nextAttackTime)
-            {
-                OnEnemyAttack?.Invoke(this, EventArgs.Empty);
-                _nextAttackTime = Time.time + _attackRate;
-            }
+            OnEnemyAttack?.Invoke(this, EventArgs.Empty);
+            _nextAttackTime = Time.time + _attackRate;
         }
     }
 }

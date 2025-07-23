@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [SelectionBase]
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     // Variables Events
     public event EventHandler OnPlayerDeath;
     public event EventHandler OnPlayerTakeHit;
+    public event EventHandler OnPlayerFlashBlink;
 
     private void Awake()
     {
@@ -72,11 +74,14 @@ public class Player : MonoBehaviour
             _currentHealth = Mathf.Max(0, _currentHealth -= damage);
             _knockBack.GetKnockedBack(damageSource);
             StartCoroutine(ResetCanTakeDamage());
-            Debug.Log(_currentHealth);
+
             OnPlayerTakeHit?.Invoke(this, EventArgs.Empty);
+            //OnPlayerFlashBlink?.Invoke(this, EventArgs.Empty);
+            Debug.Log(_currentHealth);
             DetectDeath();
         }
     }
+    public bool IsPlayerAlive() => IsAlive;
 
     // Private Methods
     private void GameInput_OnPlayerAttak(object sender, EventArgs e)
@@ -110,10 +115,15 @@ public class Player : MonoBehaviour
             IsAlive = false;
             _capsuleCollider.enabled = false;
             _boxCollider.enabled = false;
-            _rb.velocity = Vector2.zero;
+
+            DisableMovement();
 
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
             Debug.Log("Player is dead!");
         }
+    }
+    private void DisableMovement()
+    {
+        GameInput.Instance.DisableMovement();
     }
 }
