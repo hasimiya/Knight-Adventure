@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordSlashVisual : MonoBehaviour
@@ -16,7 +14,12 @@ public class SwordSlashVisual : MonoBehaviour
     {
         sword.OnSwordSwing += Sword_OnSwordSwing;
     }
+    private void OnDestroy()
+    {
+        sword.OnSwordSwing -= Sword_OnSwordSwing;
+    }
 
+    // Private Methods
     private void Sword_OnSwordSwing(object sender, EventArgs e)
     {
         animator?.SetTrigger(ATTAK_TRIGGER);

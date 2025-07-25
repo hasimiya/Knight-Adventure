@@ -344,4 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9590791fedc73114cbe57f10a0bcf977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 4
+  _skeletonVisual: {fileID: 0}
+  _enemyAI: {fileID: 3550116525300145504}
+  _enemySO: {fileID: 11400000, guid: 6b3eec0bfc17ad94b9f30e01b8da5eb6, type: 2}

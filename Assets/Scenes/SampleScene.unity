@@ -907,6 +907,7 @@ GameObject:
   - component: {fileID: 1067291969}
   - component: {fileID: 1067291968}
   - component: {fileID: 1067291967}
+  - component: {fileID: 1067291970}
   m_Layer: 0
   m_Name: Nav Mesh Surface
   m_TagString: Untagged
@@ -975,6 +976,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1067291970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067291966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de6b560ae9ad4748b552b19d689ed33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1072768127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1767,7 +1780,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2211306177779154870, guid: 639af63972e9fd54eb8f395e9048aa54, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 854884854}
   m_SourcePrefab: {fileID: 100100000, guid: 639af63972e9fd54eb8f395e9048aa54, type: 3}
 --- !u!1660057539 &9223372036854775807

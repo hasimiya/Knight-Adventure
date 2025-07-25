@@ -24,6 +24,7 @@ public class KnockBack : MonoBehaviour
         }
     }
 
+    // Public Methods
     public void StopKnockBackMovement()
     {
         _rb.velocity = Vector2.zero;

@@ -32,7 +32,11 @@ public class PlayerVisual : MonoBehaviour
             AdjustPlayerFacingDirection();
         }
     }
-
+    private void OnDestroy()
+    {
+        Player.Instance.OnPlayerDeath -= Player_OnPlayerDeath;
+        Player.Instance.OnPlayerTakeHit -= Player_OnPlayerTakeHit;
+    }
     // Private Methods
     private void AdjustPlayerFacingDirection()
     {

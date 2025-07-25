@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlashBlink : MonoBehaviour
@@ -18,14 +16,13 @@ public class FlashBlink : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _defaultMaterial = _spriteRenderer.material;
+    }
+    private void Start()
+    {
         if (_damageObject is Player)
         {
             (_damageObject as Player).OnPlayerFlashBlink += Player_OnPlayerFlashBlink;
         }
-    }
-    private void Start()
-    {
-
     }
 
     private void Update()
@@ -37,6 +34,13 @@ public class FlashBlink : MonoBehaviour
             {
                 SetDefaultMaterial();
             }
+        }
+    }
+    private void OnDestroy()
+    {
+        if (_damageObject is Player)
+        {
+            (_damageObject as Player).OnPlayerFlashBlink -= Player_OnPlayerFlashBlink;
         }
     }
 

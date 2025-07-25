@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [SelectionBase]
@@ -60,6 +59,10 @@ public class Player : MonoBehaviour
         if (_knockBack.IsGettingKnockedBack)
             return;
         HandleMovement();
+    }
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnPlayerAttak -= GameInput_OnPlayerAttak;
     }
 
     // Public Methods

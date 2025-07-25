@@ -18,16 +18,18 @@ public class GameInput : MonoBehaviour
         _playerInputActions.Combat.Attack.started += PlayerAttack_started;
     }
 
-    private void PlayerAttack_started(InputAction.CallbackContext context)
-    {
-        OnPlayerAttak?.Invoke(this, EventArgs.Empty);
-    }
-
+    // Public Methods
     public Vector2 GetMovementVector() => _playerInputActions.Player.Move.ReadValue<Vector2>().normalized;
     public Vector3 GetMousePosition() => Mouse.current.position.ReadValue();
     // получаем позицию мыши в мировых координатах
     public void DisableMovement()
     {
         _playerInputActions.Disable();
+    }
+
+    // Event Methods
+    private void PlayerAttack_started(InputAction.CallbackContext context)
+    {
+        OnPlayerAttak?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -14,13 +14,20 @@ public class SwordVisual : MonoBehaviour
     {
         _sword.OnSwordSwing += Sword_OnSwordSwing;
     }
-
-    private void Sword_OnSwordSwing(object sender, EventArgs e)
+    private void OnDestroy()
     {
-        _animator?.SetTrigger(ATTAK_TRIGGER);
+        _sword.OnSwordSwing -= Sword_OnSwordSwing;
     }
+
+    // Public Methods
     public void TriggerEndAttackAnimation()
     {
         _sword.AttackColliderTurnOff();
+    }
+
+    // Private Methods
+    private void Sword_OnSwordSwing(object sender, EventArgs e)
+    {
+        _animator?.SetTrigger(ATTAK_TRIGGER);
     }
 }

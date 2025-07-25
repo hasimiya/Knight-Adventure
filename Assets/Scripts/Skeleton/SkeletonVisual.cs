@@ -19,7 +19,7 @@ public class SkeletonVisual : MonoBehaviour
     private const string CHASING_SPEED_MULTIPLIER_FLOAT = "ChasingSpeedMultiplier";
 
     // Variables Attack
-    private bool _isAttackEnemy = false;
+    //private bool _isAttackEnemy = false;
 
     private void Awake()
     {
@@ -36,6 +36,12 @@ public class SkeletonVisual : MonoBehaviour
     {
         _animator.SetBool(IS_RUNNING_BOOL, _enemyAI.IsRunning);
         _animator.SetFloat(CHASING_SPEED_MULTIPLIER_FLOAT, _enemyAI.GetRoamingAnimationSpeed());
+    }
+    private void OnDestroy()
+    {
+        _enemyAI.OnEnemyAttack -= EnemyAI_OnEnemyAttack;
+        _enemyEntity.OnTakeHit -= EnemyEntity_OnTakeHit;
+        _enemyEntity.OnEnemyDeath -= EnemyEntity_OnEnemyDeath;
     }
 
     // Public Methods
