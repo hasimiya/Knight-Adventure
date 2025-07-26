@@ -3,9 +3,17 @@ using UnityEngine;
 
 public class SwordSlashVisual : MonoBehaviour
 {
+    // Variables ScriptableObject
     [SerializeField] private Sword sword;
+
+    // Variables Components
     private Animator animator;
-    private const string ATTAK_TRIGGER = "Attack";
+
+    // Variables CONST
+    private const string AttakTrigger = "Attack";
+
+    // Variables Hash
+    private static readonly int AttakTriggerHash = Animator.StringToHash(AttakTrigger);
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -22,6 +30,6 @@ public class SwordSlashVisual : MonoBehaviour
     // Private Methods
     private void Sword_OnSwordSwing(object sender, EventArgs e)
     {
-        animator?.SetTrigger(ATTAK_TRIGGER);
+        animator?.SetTrigger(AttakTriggerHash);
     }
 }

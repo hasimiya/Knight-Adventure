@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    [SerializeField] private float _damageAmount = 2;
+    // Variables ScriptableObject
+    [SerializeField] private float damageAmount = 2;
+
+    // Variables Components
+    private PolygonCollider2D _polygonCollider2D;
+
+    // Variables Events
     public event EventHandler OnSwordSwing;
 
-    private PolygonCollider2D _polygonCollider2D;
     private void Awake()
     {
         _polygonCollider2D = GetComponent<PolygonCollider2D>();
@@ -37,7 +42,7 @@ public class Sword : MonoBehaviour
     {
         if (collision.transform.TryGetComponent(out EnemyEntity enemyEntity))
         {
-            enemyEntity.TakeDamage(_damageAmount);
+            enemyEntity.TakeDamage(damageAmount);
         }
     }
 }

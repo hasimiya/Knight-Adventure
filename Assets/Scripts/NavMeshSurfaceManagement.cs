@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class NavMeshSurfaceManagement : MonoBehaviour
 {
+    // Singleton Instance
     public static NavMeshSurfaceManagement Instance { get; private set; }
+
+    // Variables Components
     private NavMeshSurface _navMeshSurface;
     private void Awake()
     {

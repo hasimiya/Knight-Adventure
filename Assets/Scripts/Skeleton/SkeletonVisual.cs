@@ -3,23 +3,30 @@ using UnityEngine;
 
 public class SkeletonVisual : MonoBehaviour
 {
-    [SerializeField] private EnemyAI _enemyAI;
-    [SerializeField] private EnemyEntity _enemyEntity;
-    [SerializeField] private GameObject _enemyShadow;
+    // Variables ScriptableObject
+    [SerializeField] private EnemyAI enemyAI;
+    [SerializeField] private EnemyEntity enemyEntity;
+    [SerializeField] private GameObject enemyShadow;
 
     // Variables Components
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
 
-    // Variable CONST and Bool
-    private const string ANIMATOR_ATTACK_TRIGGER = "Attack";
-    private const string TAKEHIT_TRIGGER = "TakeHit";
-    private const string IS_DIE_BOOL = "IsDie";
-    private const string IS_RUNNING_BOOL = "IsRunning";
-    private const string CHASING_SPEED_MULTIPLIER_FLOAT = "ChasingSpeedMultiplier";
+    // Variable CONST
+    private const string AnimatorAttakTrigger = "Attack";
+    private const string TakeHitTrigger = "TakeHit";
 
-    // Variables Attack
-    //private bool _isAttackEnemy = false;
+    private const string IsDieBool = "IsDie";
+    private const string IsRunningBool = "IsRunning";
+
+    private const string ChasingSpeedMultiplierFloat = "ChasingSpeedMultiplier";
+
+    // Variables Hash
+    private static readonly int AnimatorAttakTriggerHash = Animator.StringToHash(AnimatorAttakTrigger);
+    private static readonly int TakeHitTriggerHash = Animator.StringToHash(TakeHitTrigger);
+    private static readonly int IsDieBoolHash = Animator.StringToHash(IsDieBool);
+    private static readonly int IsRunningBoolHash = Animator.StringToHash(IsRunningBool);
+    private static readonly int ChasingSpeedMultiplierFloatHash = Animator.StringToHash(ChasingSpeedMultiplierFloat);
 
     private void Awake()
     {
@@ -28,47 +35,47 @@ public class SkeletonVisual : MonoBehaviour
     }
     private void Start()
     {
-        _enemyAI.OnEnemyAttack += EnemyAI_OnEnemyAttack;
-        _enemyEntity.OnTakeHit += EnemyEntity_OnTakeHit;
-        _enemyEntity.OnEnemyDeath += EnemyEntity_OnEnemyDeath;
+        enemyAI.OnEnemyAttack += EnemyAI_OnEnemyAttack;
+        enemyEntity.OnTakeHit += EnemyEntity_OnTakeHit;
+        enemyEntity.OnEnemyDeath += EnemyEntity_OnEnemyDeath;
     }
     private void Update()
     {
-        _animator.SetBool(IS_RUNNING_BOOL, _enemyAI.IsRunning);
-        _animator.SetFloat(CHASING_SPEED_MULTIPLIER_FLOAT, _enemyAI.GetRoamingAnimationSpeed());
+        _animator.SetBool(IsRunningBoolHash, enemyAI.IsRunning);
+        _animator.SetFloat(ChasingSpeedMultiplierFloatHash, enemyAI.GetRoamingAnimationSpeed());
     }
     private void OnDestroy()
     {
-        _enemyAI.OnEnemyAttack -= EnemyAI_OnEnemyAttack;
-        _enemyEntity.OnTakeHit -= EnemyEntity_OnTakeHit;
-        _enemyEntity.OnEnemyDeath -= EnemyEntity_OnEnemyDeath;
+        enemyAI.OnEnemyAttack -= EnemyAI_OnEnemyAttack;
+        enemyEntity.OnTakeHit -= EnemyEntity_OnTakeHit;
+        enemyEntity.OnEnemyDeath -= EnemyEntity_OnEnemyDeath;
     }
 
     // Public Methods
     public void TriggerAttackAnimationTurnOff()
     {
-        _enemyEntity.PolygonColliderTurnOff();
+        enemyEntity.PolygonColliderTurnOff();
     }
     public void TriggerAttackAnimationTurnOn()
     {
-        _enemyEntity.PolygonColliderTurnOn();
+        enemyEntity.PolygonColliderTurnOn();
     }
 
     // Event Methods
     private void EnemyEntity_OnTakeHit(object sender, EventArgs e)
     {
-        _animator.SetTrigger(TAKEHIT_TRIGGER);
+        _animator.SetTrigger(TakeHitTriggerHash);
     }
 
     private void EnemyAI_OnEnemyAttack(object sender, EventArgs e)
     {
-        _animator.SetTrigger(ANIMATOR_ATTACK_TRIGGER);
+        _animator.SetTrigger(AnimatorAttakTriggerHash);
         Debug.Log($"{gameObject.name} attack!");
     }
     private void EnemyEntity_OnEnemyDeath(object sender, EventArgs e)
     {
-        _animator.SetBool(IS_DIE_BOOL, true);
+        _animator.SetBool(IsDieBoolHash, true);
         _spriteRenderer.sortingOrder = -1;
-        _enemyShadow.SetActive(false);
+        enemyShadow.SetActive(false);
     }
 }

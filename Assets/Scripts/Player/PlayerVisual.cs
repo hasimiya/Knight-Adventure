@@ -3,18 +3,24 @@ using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
+    // Variables ScriptableObject
+    [SerializeField] private GameObject playerShadow;
+
     // Variables Components
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
-    [SerializeField] private GameObject _playerShadow;
     private FlashBlink _flashBlink;
 
     // Variables CONST
-    private const string TAKEHIT_TRIGGER = "TakeHit";
+    private const string TakeHitTrigger = "TakeHit";
 
-    private const string IS_RUNNING = "IsRunning";
-    private const string IS_DIE_BOOL = "IsDie";
+    private const string IsRunningBool = "IsRunning";
+    private const string IsDieBool = "IsDie";
 
+    // Variebles Hash
+    private static readonly int TakeHitTriggerHash = Animator.StringToHash(TakeHitTrigger);
+    private static readonly int IsRunningBoolHash = Animator.StringToHash(IsRunningBool);
+    private static readonly int IsDieBoolHash = Animator.StringToHash(IsDieBool);
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -26,7 +32,7 @@ public class PlayerVisual : MonoBehaviour
 
     private void Update()
     {
-        _animator.SetBool(IS_RUNNING, Player.Instance.IsRunning());
+        _animator.SetBool(IsRunningBoolHash, Player.Instance.IsRunning());
         if (Player.Instance.IsPlayerAlive())
         {
             AdjustPlayerFacingDirection();
@@ -42,25 +48,19 @@ public class PlayerVisual : MonoBehaviour
     {
         Vector3 mousePosition = GameInput.Instance.GetMousePosition();
         Vector3 playerPosition = Player.Instance.GetPlayerScreenPosition();
-        if (mousePosition.x < playerPosition.x)
-        {
-            _spriteRenderer.flipX = true;
-        }
-        else
-        {
-            _spriteRenderer.flipX = false;
-        }
+
+        _spriteRenderer.flipX = mousePosition.x < playerPosition.x;
     }
 
     // Event Methods
     private void Player_OnPlayerDeath(object sender, EventArgs e)
     {
-        _animator.SetBool(IS_DIE_BOOL, true);
-        _playerShadow.SetActive(false);
+        _animator.SetBool(IsDieBoolHash, true);
+        playerShadow.SetActive(false);
         _flashBlink.StopBliking();
     }
     private void Player_OnPlayerTakeHit(object sender, EventArgs e)
     {
-        _animator.SetTrigger(TAKEHIT_TRIGGER);
+        _animator.SetTrigger(TakeHitTriggerHash);
     }
 }

@@ -7,26 +7,37 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
 
+    // Variables ScriptableObject
+    [SerializeField] private TrailRenderer playerTrail;
+
+    // Variables Settings
+    [SerializeField] private float movingSpeed = 5f;
+    [SerializeField] private float maxHealth = 10;
+
+    private readonly float _minMovingSpeed = 0.1f;
+    private readonly float _damageRecoveryTime = 0.5f;
+
+    private float _currentHealth;
+    private float _normalSpeed;
+    private float _dashSpeed = 4f;
+    private float _dashDuration = 0.2f;
+
+    // Variables objects
+    private Camera _mainCamera;
+
     // Variables Components
     private Rigidbody2D _rb;
     private CapsuleCollider2D _capsuleCollider;
     private BoxCollider2D _boxCollider;
     private KnockBack _knockBack;
 
-    // Variables Settings
-    [SerializeField] private float _speed = 5f;
-    [SerializeField] private float _maxHealth = 10;
 
-    private float _minMovingSpeed = 0.1f;
-    private float _damageRecoveryTime = 0.5f;
-
-    private float _currentHealth;
-
-    private bool _isRunning = false;
-    private bool _canTakeDamage;
 
     // Variables Bool
     public bool IsAlive { get; private set; } = true;
+    private bool _isRunning = false;
+    private bool _canTakeDamage;
+    private bool _canDash = true;
 
     // Variables Input
     private Vector2 _inputVector;
@@ -39,6 +50,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _mainCamera = Camera.main;
+
         _rb = GetComponent<Rigidbody2D>();
         _capsuleCollider = GetComponent<CapsuleCollider2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -46,9 +59,12 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        _currentHealth = _maxHealth;
         _canTakeDamage = true;
+        _currentHealth = maxHealth;
+        _normalSpeed = movingSpeed;
+
         GameInput.Instance.OnPlayerAttak += GameInput_OnPlayerAttak;
+        GameInput.Instance.OnPlayerDash += GameInput_OnPlayerDash;
     }
     void Update()
     {
@@ -67,7 +83,7 @@ public class Player : MonoBehaviour
 
     // Public Methods
     public bool IsRunning() => _isRunning;
-    public Vector3 GetPlayerScreenPosition() => Camera.main.WorldToScreenPoint(transform.position);
+    public Vector3 GetPlayerScreenPosition() => _mainCamera.WorldToScreenPoint(transform.position);
     // это метод для получения позиции игрока в мировых координатах
     public void TakeDamage(Transform damageSource, float damage)
     {
@@ -87,14 +103,9 @@ public class Player : MonoBehaviour
     public bool IsPlayerAlive() => IsAlive;
 
     // Private Methods
-    private void GameInput_OnPlayerAttak(object sender, EventArgs e)
-    {
-        ActiveWeapon.Instance.GetActiveWeapon().Attak();
-    }
-
     private void HandleMovement()
     {
-        Vector2 newPosition = _rb.position + _inputVector * _speed * Time.deltaTime;
+        Vector2 newPosition = _rb.position + (_inputVector * movingSpeed * Time.deltaTime);
 
         _rb.MovePosition(newPosition);
         if (Mathf.Abs(_inputVector.x) > _minMovingSpeed || Mathf.Abs(_inputVector.y) > _minMovingSpeed)
@@ -128,5 +139,40 @@ public class Player : MonoBehaviour
     private void DisableMovement()
     {
         GameInput.Instance.DisableMovement();
+    }
+    private void Dash()
+    {
+        _canDash = false;
+        movingSpeed *= _dashSpeed;
+        playerTrail.emitting = true;
+        StartCoroutine(ResetSpeed());
+    }
+
+    private IEnumerator ResetSpeed()
+    {
+        yield return new WaitForSeconds(_dashDuration);
+        movingSpeed = _normalSpeed;
+        _canDash = true;
+        playerTrail.emitting = false;
+    }
+
+    // Event Methods
+    private void GameInput_OnPlayerAttak(object sender, EventArgs e)
+    {
+        ActiveWeapon.Instance.GetActiveWeapon().Attak();
+    }
+    private void GameInput_OnPlayerDash(object sender, EventArgs e)
+    {
+        if (_canDash && _isRunning)
+        {
+            Dash();
+            DebugLogUsedDash();
+        }
+    }
+    private void DebugLogUsedDash()
+    {
+        Debug.Log("Player used dash!");
+        Debug.Log($"IsDashing: {_canDash}");
+        Debug.Log($"Player dash speed: {movingSpeed}");
     }
 }

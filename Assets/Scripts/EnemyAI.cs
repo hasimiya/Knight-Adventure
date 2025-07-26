@@ -9,18 +9,18 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
 
     // Variables Idle
-    [SerializeField] private State _startingState;
-    [SerializeField] private float _roamingDistanseMax = 7f;
-    [SerializeField] private float _roamingDistanseMin = 3f;
-    [SerializeField] private float _roamingTimerMax = 2f;
+    [SerializeField] private State startingState;
+    [SerializeField] private float roamingDistanseMax = 7f;
+    [SerializeField] private float roamingDistanseMin = 3f;
+    [SerializeField] private float roamingTimerMax = 2f;
 
     // Variables Chasing
-    [SerializeField] private bool _isChasingEnemy = false;
-    [SerializeField] private float _chasingDistance = 4f;
-    [SerializeField] private float _chasingSpeedMultiplier = 2f;
+    [SerializeField] private bool isChasingEnemy = false;
+    [SerializeField] private float chasingDistance = 4f;
+    [SerializeField] private float chasingSpeedMultiplier = 2f;
 
     // Variables Attacking
-    [SerializeField] private bool _isAttackingEnemy = false;
+    [SerializeField] private bool isAttackingEnemy = false;
     private float _attackingDistance = 2f;
     private float _attackRate = 2f;
     private float _nextAttackTime = 0f;
@@ -33,20 +33,8 @@ public class EnemyAI : MonoBehaviour
     private Vector3 _startingPosition;
     private float _roamingSpeed;
     private float _chasingSpeed;
-    public bool IsRunning
-    {
-        get
-        {
-            if (_navMeshAgent.velocity == Vector3.zero)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
+    public bool IsRunning => _navMeshAgent.velocity != Vector3.zero;
+
     // Enum State
     private enum State
     {
@@ -57,21 +45,22 @@ public class EnemyAI : MonoBehaviour
         Death
     }
 
-    // Variables Events
-    public event EventHandler OnEnemyAttack;
-
     // Variables ???
     private float _nextCheckDirectionTime = 0f;
     private float _chekDirectionDuration = 0.1f;
     private Vector3 _lastPosition;
+
+    // Variables Events
+    public event EventHandler OnEnemyAttack;
+
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false; // отключаем поворот агента
         _navMeshAgent.updateUpAxis = false; // отключаем обновление оси Y агента
-        _currentState = _startingState;
+        _currentState = startingState;
         _roamingSpeed = _navMeshAgent.speed;
-        _chasingSpeed = _roamingSpeed * _chasingSpeedMultiplier;
+        _chasingSpeed = _roamingSpeed * chasingSpeedMultiplier;
     }
     private void Update()
     {
@@ -91,14 +80,14 @@ public class EnemyAI : MonoBehaviour
 
         if (Player.Instance.IsPlayerAlive())
         {
-            if (_isChasingEnemy)
+            if (isChasingEnemy)
             {
-                if (distanceToPlayer <= _chasingDistance)
+                if (distanceToPlayer <= chasingDistance)
                 {
                     newState = State.Chasing;
                 }
             }
-            if (_isAttackingEnemy)
+            if (isAttackingEnemy)
             {
                 if (distanceToPlayer <= _attackingDistance)
                 {
@@ -149,7 +138,7 @@ public class EnemyAI : MonoBehaviour
                 if (_roamingTimer < 0)
                 {
                     Roaming();
-                    _roamingTimer = _roamingTimerMax;
+                    _roamingTimer = roamingTimerMax;
                 }
                 CheckCurrentState();
                 break;
@@ -177,18 +166,11 @@ public class EnemyAI : MonoBehaviour
     }
     private Vector3 GetRoamingPosition()
     {
-        return _startingPosition + Utils.GetRandomDir() * UnityEngine.Random.Range(_roamingDistanseMin, _roamingDistanseMax);
+        return _startingPosition + Utils.GetRandomDir() * UnityEngine.Random.Range(roamingDistanseMin, roamingDistanseMax);
     }
     private void ChangeFacingDirection(Vector3 sourcePosition, Vector3 targetPosition)
     {
-        if (sourcePosition.x > targetPosition.x)
-        {
-            transform.rotation = Quaternion.Euler(0, -180, 0);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+        transform.rotation = sourcePosition.x > targetPosition.x ? Quaternion.Euler(0, -180, 0) : Quaternion.Euler(0, 0, 0);
     }
     private void MovementDirectionHandler()
     {

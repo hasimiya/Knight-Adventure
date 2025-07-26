@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DesstructiblePlantVisual : MonoBehaviour
 {
-    // Variables Components
+    // Variables ScriptableObject
     [SerializeField] private DesstructiblePlant _desstructiblePlant;
     [SerializeField] private GameObject _bushDeathVFXPrefab;
     private void Start()

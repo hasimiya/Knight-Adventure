@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class ActiveWeapon : MonoBehaviour
 {
+    // Singleton Instance
     public static ActiveWeapon Instance { get; private set; }
-    [SerializeField] private Sword _sword;
+
+    // Variables ScriptableObject
+    [SerializeField] private Sword sword;
+
     private void Awake()
     {
         Instance = this;
@@ -17,19 +21,13 @@ public class ActiveWeapon : MonoBehaviour
     }
     public Sword GetActiveWeapon()
     {
-        return _sword;
+        return sword;
     }
     private void FollowMousePosition()
     {
         Vector3 mousePosition = GameInput.Instance.GetMousePosition();
         Vector3 playerPosition = Player.Instance.GetPlayerScreenPosition();
-        if (mousePosition.x < playerPosition.x)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+
+        transform.rotation = mousePosition.x < playerPosition.x ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
 }

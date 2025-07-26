@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SelfDestroyVFX : MonoBehaviour
 {
+    // Variables Components
     private ParticleSystem _particleSystem;
     private void Awake()
     {

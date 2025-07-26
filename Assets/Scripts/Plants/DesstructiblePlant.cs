@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class DesstructiblePlant : MonoBehaviour
 {
+    // Variables Events
     public event EventHandler OnDestructibleTakeDamage;
     private void OnTriggerEnter2D(Collider2D collision)
     {

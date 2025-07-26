@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class FlashBlink : MonoBehaviour
 {
-    [SerializeField] private MonoBehaviour _damageObject;
-    [SerializeField] private Material _blinkMaterial;
-    [SerializeField] private float _blinkDuration = 0.2f;
+    // / Variables ScriptableObject
+    [SerializeField] private MonoBehaviour damageObject;
+    [SerializeField] private Material blinkMaterial;
+    [SerializeField] private float blinkDuration = 0.2f;
 
-    private float _blinkTimer;
+    // Variables Components
     private Material _defaultMaterial;
     private SpriteRenderer _spriteRenderer;
+
+    // Variables
+    private float _blinkTimer;
     private bool IsBliking = true;
 
     private void Awake()
@@ -19,9 +23,9 @@ public class FlashBlink : MonoBehaviour
     }
     private void Start()
     {
-        if (_damageObject is Player)
+        if (damageObject is Player player)
         {
-            (_damageObject as Player).OnPlayerFlashBlink += Player_OnPlayerFlashBlink;
+            player.OnPlayerFlashBlink += Player_OnPlayerFlashBlink;
         }
     }
 
@@ -38,9 +42,9 @@ public class FlashBlink : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (_damageObject is Player)
+        if (damageObject is Player player)
         {
-            (_damageObject as Player).OnPlayerFlashBlink -= Player_OnPlayerFlashBlink;
+            player.OnPlayerFlashBlink -= Player_OnPlayerFlashBlink;
         }
     }
 
@@ -58,8 +62,8 @@ public class FlashBlink : MonoBehaviour
     }
     private void SetBlikingMaterial()
     {
-        _blinkTimer = _blinkDuration;
-        _spriteRenderer.material = _blinkMaterial;
+        _blinkTimer = blinkDuration;
+        _spriteRenderer.material = blinkMaterial;
     }
 
     // Event methods
