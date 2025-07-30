@@ -75,27 +75,29 @@ public class EnemyAI : MonoBehaviour
     }
     public void CheckCurrentState()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        State newState = State.Roaming;
+        State newState;
 
-        if (Player.Instance.IsPlayerAlive())
+        if (!Player.Instance.IsPlayerAlive())
         {
-            if (isChasingEnemy)
+            newState = State.Roaming;
+        }
+        else
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
+
+            if (isAttackingEnemy && distanceToPlayer <= _attackingDistance)
             {
-                if (distanceToPlayer <= chasingDistance)
-                {
-                    newState = State.Chasing;
-                }
+                newState = State.Attacking;
             }
-            if (isAttackingEnemy)
+            else if (isChasingEnemy && distanceToPlayer <= chasingDistance)
             {
-                if (distanceToPlayer <= _attackingDistance)
-                {
-                    newState = State.Attacking;
-                }
+                newState = State.Chasing;
+            }
+            else
+            {
+                newState = State.Roaming;
             }
         }
-
 
         if (newState != _currentState)
         {
@@ -116,6 +118,46 @@ public class EnemyAI : MonoBehaviour
                     break;
             }
         }
+
+        //State newState = State.Roaming;
+
+        //if (Player.Instance.IsPlayerAlive())
+        //{
+        //    if (isChasingEnemy)
+        //    {
+        //        if (distanceToPlayer <= chasingDistance)
+        //        {
+        //            newState = State.Chasing;
+        //        }
+        //    }
+        //    if (isAttackingEnemy)
+        //    {
+        //        if (distanceToPlayer <= _attackingDistance)
+        //        {
+        //            newState = State.Attacking;
+        //        }
+        //    }
+        //}        
+
+        //if (newState != _currentState)
+        //{
+        //    _currentState = newState;
+        //    switch (newState)
+        //    {
+        //        case State.Chasing:
+        //            _navMeshAgent.ResetPath();
+        //            _navMeshAgent.speed = _chasingSpeed;
+        //            break;
+        //        case State.Roaming:
+        //            _navMeshAgent.ResetPath();
+        //            _navMeshAgent.speed = _roamingSpeed;
+        //            _roamingTimer = 0f;
+        //            break;
+        //        case State.Attacking:
+        //            _navMeshAgent.ResetPath();
+        //            break;
+        //    }
+        //}
     }
     public void ChasingTarget()
     {
@@ -151,7 +193,6 @@ public class EnemyAI : MonoBehaviour
                 CheckCurrentState();
                 break;
             case State.Death:
-
                 break;
             default:
             case State.Idle:
