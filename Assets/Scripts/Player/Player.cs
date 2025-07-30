@@ -80,6 +80,13 @@ public class Player : MonoBehaviour
     {
         GameInput.Instance.OnPlayerAttak -= GameInput_OnPlayerAttak;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<ICollectible>(out ICollectible collectible))
+        {
+            collectible.Collect();
+        }
+    }
 
     // Public Methods
     public bool IsRunning() => _isRunning;
@@ -90,7 +97,7 @@ public class Player : MonoBehaviour
         if (_canTakeDamage)
         {
             _canTakeDamage = false;
-            _currentHealth = Mathf.Max(0, _currentHealth -= damage);
+            _currentHealth = Mathf.Max(0, _currentHealth -= damage); // 
             _knockBack.GetKnockedBack(damageSource);
             StartCoroutine(ResetCanTakeDamage());
 
@@ -101,6 +108,14 @@ public class Player : MonoBehaviour
         }
     }
     public bool IsPlayerAlive() => IsAlive;
+    public void Heal(float healAmount)
+    {
+        if (_currentHealth < maxHealth)
+        {
+            _currentHealth = Mathf.Min(maxHealth, _currentHealth + healAmount);
+            Debug.Log($"Player healed: {_currentHealth}");
+        }
+    }
 
     // Private Methods
     private void HandleMovement()
