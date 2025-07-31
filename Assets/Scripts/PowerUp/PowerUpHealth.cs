@@ -9,7 +9,7 @@ public class PowerUpHealth : MonoBehaviour, ICollectible
     // Interface Metod
     public void Collect()
     {
-        Player.Instance.Heal(powerUpSO.HealthBoost);
+        Player.Instance.Heal(powerUpSO.Value);
         Destroy(gameObject);
     }
 }

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     private float _dashSpeed = 4f;
     private float _dashDuration = 0.2f;
 
+    private float _score;
+
     // Variables objects
     private Camera _mainCamera;
 
@@ -56,11 +58,14 @@ public class Player : MonoBehaviour
         _capsuleCollider = GetComponent<CapsuleCollider2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _knockBack = GetComponent<KnockBack>();
+
+        _currentHealth = maxHealth;
     }
     void Start()
     {
         _canTakeDamage = true;
-        _currentHealth = maxHealth;
+        _score = 0;
+
         _normalSpeed = movingSpeed;
 
         GameInput.Instance.OnPlayerAttak += GameInput_OnPlayerAttak;
@@ -103,19 +108,29 @@ public class Player : MonoBehaviour
 
             OnPlayerTakeHit?.Invoke(this, EventArgs.Empty);
             //OnPlayerFlashBlink?.Invoke(this, EventArgs.Empty);
-            Debug.Log(_currentHealth);
+            //Debug.Log(_currentHealth);
+            UIManager.Instance.GetHealthUI();
             DetectDeath();
         }
     }
     public bool IsPlayerAlive() => IsAlive;
+
+    // PowerUp Methods
     public void Heal(float healAmount)
     {
         if (_currentHealth < maxHealth)
         {
             _currentHealth = Mathf.Min(maxHealth, _currentHealth + healAmount);
-            Debug.Log($"Player healed: {_currentHealth}");
+            UIManager.Instance.GetHealthUI();
         }
     }
+    public void UpdateScore(float coinScore)
+    {
+        _score += coinScore;
+        UIManager.Instance.GetScoreUI();
+    }
+    public float GetCurrentHealth() => _currentHealth;
+    public float GetScore() => _score;
 
     // Private Methods
     private void HandleMovement()

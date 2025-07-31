@@ -4,5 +4,5 @@ using UnityEngine;
 public class PowerUpSO : ScriptableObject
 {
     public string Name;
-    public float HealthBoost;
+    public float Value;
 }
